@@ -10,7 +10,7 @@ export class UserService {
 
   async create(data: UserDTO): Promise<UserDTO> {
     data.birthAt = data.birthAt ? new Date(data.birthAt) : null;
-    data.password = await bcrypt.hash(data.password, await bcrypt.genSalt());
+    data.password = await this.generatePassword(data.password);
     return await this.prisma.user.create({
       data,
     });
@@ -28,6 +28,7 @@ export class UserService {
 
   async update(id: string, data: UserDTO): Promise<UserDTO> {
     data.birthAt = data.birthAt ? new Date(data.birthAt) : null;
+    data.password = await this.generatePassword(data.password);
     return await this.prisma.user.update({
       data,
       where: { id },
@@ -53,7 +54,7 @@ export class UserService {
     }
 
     if (password) {
-      data.password = password;
+      data.password = await this.generatePassword(data.password);
     }
 
     if (role) {
@@ -81,5 +82,9 @@ export class UserService {
     });
 
     return +count > 0;
+  }
+
+  private async generatePassword(password: string) {
+    return await bcrypt.hash(password, await bcrypt.genSalt());
   }
 }

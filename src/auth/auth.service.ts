@@ -111,10 +111,10 @@ export class AuthService {
   }
 
   private async checkPassword(password, user: User) {
-    const pass = await bcrypt.compare(password, user.password)
+    const pass = await bcrypt.compare(password, user.password);
 
     if (pass === false) {
-      throw new UnauthorizedException("Invalid password");
+      throw new UnauthorizedException('Invalid password');
     }
   }
 }
