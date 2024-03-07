@@ -9,6 +9,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { RegisterDTO } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
     private readonly userService: UserService,
+    private readonly mailer: MailerService
   ) {}
 
   async createToken(user: User): Promise<string> {
@@ -34,11 +36,11 @@ export class AuthService {
     );
   }
 
-  checkToken(token: string) {
+  checkToken(token: string, audience: string = 'login', issuer: string = 'users') {
     try {
       const data = this.jwtService.verify(token, {
-        audience: 'users',
-        issuer: 'login',
+        audience: audience,
+        issuer: issuer,
       });
 
       return data;
@@ -76,24 +78,43 @@ export class AuthService {
       where: { email },
     });
 
+    const token = this.jwtService.sign({
+      id: user.id
+    },
+    {
+      expiresIn: '30 minutes',
+      subject: String(user.id),
+      issuer: 'forget',
+      audience: 'users',
+    })
     if (user) {
-      //TO DO: send an e-mail
+      const {envelope} = await this.mailer.sendMail({
+        subject: "Recuperação de senha",
+        to: user.email,
+        template: "forget",
+        context: {
+          name: user.name,
+          token
+        }
+      })
+
+      return {envelope}
     }
 
     throw new UnauthorizedException('E-mail not found!');
   }
 
-  async reset(password: string, token: string): Promise<string> {
-    //TO DO: validate token
+  async reset(password: string, token: string) {
+    try {
+      const {id} = this.checkToken(token, 'users', 'forget')
 
-    //TO DO: extract id from JWT
-    const id: string = 'uuid';
-    const user: User = await this.prisma.user.update({
-      data: { password },
-      where: { id },
-    });
+      const user = await this.userService.updatePartial(id, {password})
 
-    return this.createToken(user);
+      const accessToken = await this.createToken(user);
+      return {accessToken}
+    } catch (error) {
+      throw new UnauthorizedException(error)
+    }
   }
 
   async register(data: RegisterDTO): Promise<Object> {

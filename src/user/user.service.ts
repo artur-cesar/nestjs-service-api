@@ -58,19 +58,19 @@ export class UserService {
     if (name) {
       data.name = name;
     }
-
+    
     if (email) {
       data.email = email;
     }
-
+    
     if (birthAt) {
       data.birthAt = new Date(birthAt);
     }
 
     if (password) {
-      data.password = await this.generatePassword(data.password);
+      data.password = await this.generatePassword(password);
     }
-
+    
     if (role) {
       data.role = role;
     }
