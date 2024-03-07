@@ -10,9 +10,11 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
+import { dataSourceOptions } from 'typeorm/data-source';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MailerModule.forRoot({
       transport: {
         host: 'smtp.ethereal.email',
@@ -36,21 +38,10 @@ import { User } from './user/user.entity';
     ThrottlerModule.forRoot([
       {
         ttl: Number(process.env.THROTTLE_TTL),
-        limit: Number(process.env.THROTTLE_TTL),
+        limit: Number(process.env.THROTTLE_LIMIT),
       },
     ]),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      username: 'postgres',
-      password: 'postgres',
-      database: 'api',
-      port: 5432,
-      entities: [User],
-      synchronize: process.env.ENV === 'development',
-      logging: true,
-    }),
-    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot(dataSourceOptions),
     UserModule,
     AuthModule,
   ],

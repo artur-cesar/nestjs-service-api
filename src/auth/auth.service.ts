@@ -14,6 +14,9 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
+  audience: string = 'users';
+  issuer: string = 'login ';
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
@@ -32,8 +35,8 @@ export class AuthService {
       {
         expiresIn: '7 days',
         subject: String(user.id),
-        issuer: 'login',
-        audience: 'users',
+        issuer: this.issuer,
+        audience: this.audience,
       },
     );
   }
