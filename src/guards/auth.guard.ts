@@ -12,7 +12,7 @@ import { UserService } from 'src/user/user.service';
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly authService: AuthService,
-    private readonly userSerive: UserService,
+    private readonly userSerice: UserService,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
 
       request.tokenPayload = data;
 
-      request.user = await this.userSerive.find(data.id);
+      request.user = await this.userSerice.find(data.id);
       return true;
     } catch (error) {
       return false;

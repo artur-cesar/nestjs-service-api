@@ -64,7 +64,9 @@ export class AuthController {
       new ParseFilePipe({
         validators: [
           new FileTypeValidator({ fileType: 'image/png' }),
-          new MaxFileSizeValidator({ maxSize: 1024 * Number(process.env.MAX_UPLOAD_FILE_SIZE_FACTOR) }),
+          new MaxFileSizeValidator({
+            maxSize: 1024 * Number(process.env.MAX_UPLOAD_FILE_SIZE_FACTOR),
+          }),
         ],
       }),
     )

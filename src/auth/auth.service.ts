@@ -8,13 +8,18 @@ import { UserService } from 'src/user/user.service';
 import { RegisterDTO } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { MailerService } from '@nestjs-modules/mailer';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/user/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
-    private readonly mailer: MailerService
+    private readonly mailer: MailerService,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async createToken(user: User): Promise<string> {
@@ -33,7 +38,11 @@ export class AuthService {
     );
   }
 
-  checkToken(token: string, audience: string = 'login', issuer: string = 'users') {
+  checkToken(
+    token: string,
+    audience: string = 'users',
+    issuer: string = 'login ',
+  ) {
     try {
       const data = this.jwtService.verify(token, {
         audience: audience,
@@ -56,7 +65,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string): Promise<Object> {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.userRepository.findOne({
       where: { email },
     });
 
@@ -71,31 +80,33 @@ export class AuthService {
   }
 
   async forget(email: string) {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.userRepository.findOne({
       where: { email },
     });
 
-    const token = this.jwtService.sign({
-      id: user.id
-    },
-    {
-      expiresIn: '30 minutes',
-      subject: String(user.id),
-      issuer: 'forget',
-      audience: 'users',
-    })
+    const token = this.jwtService.sign(
+      {
+        id: user.id,
+      },
+      {
+        expiresIn: '30 minutes',
+        subject: String(user.id),
+        issuer: 'forget',
+        audience: 'users',
+      },
+    );
     if (user) {
-      const {envelope} = await this.mailer.sendMail({
-        subject: "Recuperação de senha",
+      const { envelope } = await this.mailer.sendMail({
+        subject: 'Recuperação de senha',
         to: user.email,
-        template: "forget",
+        template: 'forget',
         context: {
           name: user.name,
-          token
-        }
-      })
+          token,
+        },
+      });
 
-      return {envelope}
+      return { envelope };
     }
 
     throw new UnauthorizedException('E-mail not found!');
@@ -103,21 +114,19 @@ export class AuthService {
 
   async reset(password: string, token: string) {
     try {
-      const {id} = this.checkToken(token, 'users', 'forget')
+      const { id } = this.checkToken(token, 'users', 'forget');
 
-      const user = await this.userService.updatePartial(id, {password})
-
-      const accessToken = await this.createToken(user);
-      return {accessToken}
+      const user = await this.userService.updatePartial(id, { password });
+      console.info(user);
+      // const accessToken = await this.createToken(user);
+      // return { accessToken };
     } catch (error) {
-      throw new UnauthorizedException(error)
+      throw new UnauthorizedException(error);
     }
   }
 
   async register(data: RegisterDTO): Promise<Object> {
     try {
-      data.birthAt = data.birthAt ? new Date(data.birthAt) : null;
-
       const user: User = await this.userService.create(data);
 
       const accesToken = await this.createToken(user);

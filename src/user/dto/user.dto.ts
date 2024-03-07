@@ -30,7 +30,7 @@ export class UserDTO {
 
   @IsOptional()
   @IsDateString()
-  birthAt: Date;
+  birthAt: string;
 
   @IsOptional()
   @IsEnum(Role)
@@ -38,9 +38,9 @@ export class UserDTO {
 
   @IsOptional()
   @IsDateString()
-  updatedAt: Date;
+  updatedAt: string;
 
   @IsOptional()
   @IsDateString()
-  createdAt: Date;
+  createdAt: string;
 }

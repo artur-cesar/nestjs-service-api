@@ -8,6 +8,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './user/user.entity';
 
 @Module({
   imports: [
@@ -16,9 +18,9 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-            user: 'katheryn22@ethereal.email',
-            pass: 'nMADgxtpMZhfNqaAS3'
-        }
+          user: '	dale54@ethereal.email',
+          pass: 'htA76GUhYfDJ8xcJ4V',
+        },
       },
       defaults: {
         from: '"Tutti" <arturcesar.melo@gmail.com>',
@@ -37,6 +39,17 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
         limit: Number(process.env.THROTTLE_TTL),
       },
     ]),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      username: 'postgres',
+      password: 'postgres',
+      database: 'api',
+      port: 5432,
+      entities: [User],
+      synchronize: process.env.ENV === 'development',
+      logging: true,
+    }),
     ConfigModule.forRoot(),
     UserModule,
     AuthModule,

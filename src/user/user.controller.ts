@@ -19,6 +19,7 @@ import { RoleGuard } from 'src/guards/role.guard';
 import { Role } from 'src/enums/role.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { User } from './user.entity';
 
 @UseGuards(AuthGuard, RoleGuard)
 @UseInterceptors(LogInterceptor)
@@ -27,13 +28,14 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async create(@Body() data: UserDTO): Promise<UserDTO> {
+  async create(@Body() data: UserDTO): Promise<User> {
     return await this.userService.create(data);
   }
 
-  // @Roles(Role.Admin)
+  @Roles(Role.Admin)
   @Get()
   async list(): Promise<UserDTO[]> {
+    console.log('aqui');
     return await this.userService.list();
   }
 
@@ -48,12 +50,12 @@ export class UserController {
   }
 
   @Patch(':id')
-  async patch(@Body() data: PatchUserDTO, @Param() { id }): Promise<UserDTO> {
+  async patch(@Body() data: PatchUserDTO, @Param() { id }) {
     return this.userService.updatePartial(id, data);
   }
 
   @Delete(':id')
-  async remove(@Param() { id }): Promise<UserDTO> {
+  async remove(@Param() { id }) {
     console.log(id);
     return await this.userService.remove(id);
   }
