@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserDTO } from './dto/user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PatchUserDTO } from './dto/patch-user.dto';
@@ -11,9 +16,18 @@ export class UserService {
   async create(data: UserDTO): Promise<UserDTO> {
     data.birthAt = data.birthAt ? new Date(data.birthAt) : null;
     data.password = await this.generatePassword(data.password);
-    return await this.prisma.user.create({
-      data,
-    });
+    try {
+      return await this.prisma.user.create({
+        data,
+      });
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException({
+          error: 'Email must be unique.',
+          statusCode: HttpStatus.CONFLICT,
+        });
+      }
+    }
   }
 
   async list(): Promise<UserDTO[]> {
