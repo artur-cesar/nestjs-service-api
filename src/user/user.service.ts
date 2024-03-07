@@ -5,13 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UserDTO } from './dto/user.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { PatchUserDTO } from './dto/patch-user.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
 
   async create(data: UserDTO): Promise<UserDTO> {
     data.birthAt = data.birthAt ? new Date(data.birthAt) : null;
