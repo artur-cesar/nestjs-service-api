@@ -31,7 +31,7 @@ export class UserController {
     return await this.userService.create(data);
   }
 
-  @Roles(Role.Admin)
+  // @Roles(Role.Admin)
   @Get()
   async list(): Promise<UserDTO[]> {
     return await this.userService.list();
