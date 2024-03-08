@@ -45,9 +45,9 @@ export class AuthService {
     token: string,
     audience: string = 'users',
     issuer: string = 'login ',
-  ) {
+  ): any {
     try {
-      const data = this.jwtService.verify(token, {
+      const data: any = this.jwtService.verify(token, {
         audience: audience,
         issuer: issuer,
       });
@@ -58,7 +58,7 @@ export class AuthService {
     }
   }
 
-  isValidToken(token: string) {
+  isValidToken(token: string): boolean {
     try {
       this.checkToken(token);
       return true;
@@ -82,7 +82,7 @@ export class AuthService {
     return { accessToken };
   }
 
-  async forget(email: string) {
+  async forget(email: string): Promise<object> {
     const user = await this.userRepository.findOne({
       where: { email },
     });
@@ -115,7 +115,7 @@ export class AuthService {
     throw new UnauthorizedException('E-mail not found!');
   }
 
-  async reset(password: string, token: string) {
+  async reset(password: string, token: string): Promise<object> {
     try {
       const { id } = this.checkToken(token, 'users', 'forget');
 
@@ -139,7 +139,7 @@ export class AuthService {
     }
   }
 
-  private async checkPassword(password, user: User) {
+  private async checkPassword(password, user: User): Promise<void> {
     const pass = await bcrypt.compare(password, user.password);
     if (pass === false) {
       throw new UnauthorizedException('Invalid password');

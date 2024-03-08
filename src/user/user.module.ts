@@ -19,7 +19,7 @@ import { User } from './user.entity';
   exports: [UserService],
 })
 export class UserModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer): void {
     consumer.apply(UserIdCheckMiddleware).forRoutes({
       path: 'users/:id',
       method: RequestMethod.ALL,

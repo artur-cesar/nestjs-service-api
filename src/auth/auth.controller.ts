@@ -30,29 +30,31 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  async login(@Body() { email, password }: LoginDTO) {
+  async login(@Body() { email, password }: LoginDTO): Promise<object> {
     return this.authService.login(email, password);
   }
 
   @Post('register')
-  async register(@Body() data: RegisterDTO) {
+  async register(@Body() data: RegisterDTO): Promise<object> {
     return this.authService.register(data);
   }
 
   @Post('forget')
-  async forget(@Body() { email }: ForgetPasswordDTO) {
+  async forget(
+    @Body() { email }: ForgetPasswordDTO,
+  ): Promise<object> {
     return this.authService.forget(email);
   }
 
   @Post('reset')
-  async reset(@Body() { password, token }: ResetPasswordDTO) {
+  async reset(@Body() { password, token }: ResetPasswordDTO): Promise<object> {
     return this.authService.reset(password, token);
   }
 
   @UseGuards(AuthGuard)
   @Post('me')
-  async me(@User() user) {
-    return { user };
+  async me(@User() user): Promise<any> {
+    return user;
   }
 
   @UseInterceptors(FileInterceptor('file'))
@@ -71,7 +73,7 @@ export class AuthController {
       }),
     )
     photo: Express.Multer.File,
-  ) {
+  ): Promise<object> {
     const dashUserName = user.name
       .split(' ')
       .map((i) => i.toLocaleLowerCase())

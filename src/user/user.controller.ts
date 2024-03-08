@@ -48,13 +48,12 @@ export class UserController {
   }
 
   @Patch(':id')
-  async patch(@Body() data: PatchUserDTO, @Param() { id }) {
+  async patch(@Body() data: PatchUserDTO, @Param() { id }): Promise<User> {
     return this.userService.updatePartial(id, data);
   }
 
   @Delete(':id')
-  async remove(@Param() { id }) {
-    console.log(id);
+  async remove(@Param() { id }): Promise<any> {
     return await this.userService.remove(id);
   }
 }

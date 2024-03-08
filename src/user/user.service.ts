@@ -93,7 +93,7 @@ export class UserService {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<any> {
     if ((await this.exists(id)) === false) {
       throw new NotFoundException({
         error: 'User not found',
@@ -104,7 +104,7 @@ export class UserService {
     return await this.userRepository.delete(id);
   }
 
-  private async exists(id: string) {
+  private async exists(id: string): Promise<boolean> {
     const count: number = await this.userRepository.count({
       where: { id },
     });
@@ -112,7 +112,7 @@ export class UserService {
     return +count > 0;
   }
 
-  private async generatePassword(password: string) {
+  private async generatePassword(password: string): Promise<string> {
     return await bcrypt.hash(password, await bcrypt.genSalt());
   }
 }
