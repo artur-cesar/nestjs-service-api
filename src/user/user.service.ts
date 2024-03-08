@@ -59,7 +59,7 @@ export class UserService {
   async updatePartial(
     id: string,
     { name, email, birthAt, password, role }: PatchUserDTO,
-  ): Promise<void> {
+  ): Promise<User> {
     const data: any = {};
 
     if (name) {
@@ -84,6 +84,7 @@ export class UserService {
 
     try {
       this.userRepository.update(id, data);
+      return this.find(id);
     } catch (error) {
       throw new BadRequestException({
         error,

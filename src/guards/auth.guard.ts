@@ -1,10 +1,4 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Inject,
-  Injectable,
-  forwardRef,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { UserService } from 'src/user/user.service';
 

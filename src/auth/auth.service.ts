@@ -67,7 +67,7 @@ export class AuthService {
     }
   }
 
-  async login(email: string, password: string): Promise<Object> {
+  async login(email: string, password: string): Promise<object> {
     const user = await this.userRepository.findOne({
       where: { email },
     });
@@ -120,15 +120,14 @@ export class AuthService {
       const { id } = this.checkToken(token, 'users', 'forget');
 
       const user = await this.userService.updatePartial(id, { password });
-      console.info(user);
-      // const accessToken = await this.createToken(user);
-      // return { accessToken };
+      const accessToken = await this.createToken(user);
+      return { accessToken };
     } catch (error) {
       throw new UnauthorizedException(error);
     }
   }
 
-  async register(data: RegisterDTO): Promise<Object> {
+  async register(data: RegisterDTO): Promise<object> {
     try {
       const user: User = await this.userService.create(data);
 

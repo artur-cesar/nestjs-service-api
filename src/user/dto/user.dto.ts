@@ -5,7 +5,6 @@ import {
   IsOptional,
   IsString,
   IsStrongPassword,
-  IsUUID,
 } from 'class-validator';
 import { Role } from 'src/enums/role.enum';
 

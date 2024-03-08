@@ -10,7 +10,6 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { randomUUID } from 'node:crypto';
 import { UserDTO } from './dto/user.dto';
 import { PatchUserDTO } from './dto/patch-user.dto';
 import { UserService } from './user.service';
@@ -35,7 +34,6 @@ export class UserController {
   @Roles(Role.Admin)
   @Get()
   async list(): Promise<UserDTO[]> {
-    console.log('aqui');
     return await this.userService.list();
   }
 
