@@ -41,7 +41,16 @@ import { dataSourceOptions } from 'typeorm/data-source';
         limit: Number(process.env.THROTTLE_LIMIT),
       },
     ]),
-    TypeOrmModule.forRoot(dataSourceOptions),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      username: 'postgres',
+      password: 'postgres',
+      database: "api",
+      port: 5432,
+      migrations: [`${__dirname}/../../migrations/**/*.ts`],
+      entities: [User]
+  }),
     UserModule,
     AuthModule,
   ],

@@ -11,7 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ErrorsCode } from 'src/enums/errors-code.enum';
+import { ErrorsCode } from '../enums/errors-code.enum';
 
 @Injectable()
 export class UserService {

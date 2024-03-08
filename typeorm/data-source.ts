@@ -7,7 +7,8 @@ export const dataSourceOptions: DataSourceOptions = {
     password: 'postgres',
     database: "api",
     port: 5432,
-    migrations: [`${__dirname}/migrations/**/*.ts`]
+    migrations: [`${__dirname}/migrations/**/*.ts`],
+    entities: [`${__dirname}/**/*.entity.ts`]
 }
 
 const dataSource = new DataSource(dataSourceOptions)

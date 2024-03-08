@@ -11,7 +11,7 @@ import { Role } from 'src/enums/role.enum';
 
 export class UserDTO {
   @IsOptional()
-  id: string;
+  id: string = null;
 
   @IsString()
   name: string;
