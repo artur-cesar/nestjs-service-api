@@ -104,7 +104,7 @@ export class UserService {
   }
 
   private async exists(id: string) {
-    const count: Number = await this.userRepository.count({
+    const count: number = await this.userRepository.count({
       where: { id },
     });
 

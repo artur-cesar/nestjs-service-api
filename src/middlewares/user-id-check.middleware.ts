@@ -1,5 +1,5 @@
 import { BadRequestException, NestMiddleware } from '@nestjs/common';
-var validate = require('uuid-validate');
+const validate = require('uuid-validate');
 import { NextFunction, Request, Response } from 'express';
 
 export class UserIdCheckMiddleware implements NestMiddleware {

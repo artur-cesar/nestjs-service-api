@@ -1,4 +1,3 @@
-
 import {
   Column,
   CreateDateColumn,
@@ -10,7 +9,7 @@ import { Role } from '../enums/role.enum';
 
 @Entity({ name: 'users' })
 export class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
