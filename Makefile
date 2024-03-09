@@ -6,11 +6,14 @@ up:
 format:
 	npm run format
 
-migration-create:
-	typeorm-ts-node-esm migration:run ./typeorm/migrations/$(name)
+migration-revert:
+    npm run typeorm migration:revert -- -d ./typeorm/data-source.ts
 
-migration-up:
-    "typeorm-ts-node-esm migration:run -d ./typeorm/data-source.ts"
+migration-run:
+    npm run typeorm migration:run -- -d ./typeorm/data-source.ts
+
+migration-create:
+	npm run typeorm migration:create  -- ./typeorm/migrations/${NAME}
 	
 
 

@@ -10,6 +10,9 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
+import { StudentModule } from './student/student.module';
+import { Student } from './student/entities/student.entity';
+import { ModalityModule } from './modality/modality.module';
 
 @Module({
   imports: [
@@ -48,10 +51,12 @@ import { User } from './user/user.entity';
       database: 'api',
       port: 5432,
       migrations: [`${__dirname}/../../migrations/**/*.ts`],
-      entities: [User],
+      entities: [User, Student],
     }),
     UserModule,
     AuthModule,
+    StudentModule,
+    ModalityModule,
   ],
   controllers: [AppController],
   providers: [
