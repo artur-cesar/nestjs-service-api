@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Injectable,
   NotFoundException,
-} from '@nestjs/common';
+  } from '@nestjs/common';
 import { UserDTO } from './dto/user.dto';
 import { PatchUserDTO } from './dto/patch-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -22,7 +22,7 @@ export class UserService {
 
   async create(data: UserDTO): Promise<User> {
     data.password = await this.generatePassword(data.password);
-    try {
+        try {
       return this.userRepository.save(data);
     } catch (error) {
       if (error.code === ErrorsCode.Integrity) {

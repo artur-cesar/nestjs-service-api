@@ -67,7 +67,7 @@ export class AuthService {
     }
   }
 
-  async login(email: string, password: string): Promise<object> {
+  async login(email: string, password: string): Promise<Object> {
     const user = await this.userRepository.findOne({
       where: { email },
     });
@@ -79,7 +79,7 @@ export class AuthService {
     await this.checkPassword(password, user);
 
     const accessToken = await this.createToken(user);
-    return { accessToken };
+    return { accessToken, user };
   }
 
   async forget(email: string): Promise<object> {

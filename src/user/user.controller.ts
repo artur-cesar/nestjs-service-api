@@ -31,7 +31,7 @@ export class UserController {
     return await this.userService.create(data);
   }
 
-  @Roles(Role.Admin)
+@Roles(Role.Admin)
   @Get()
   async list(): Promise<UserDTO[]> {
     return await this.userService.list();
@@ -43,7 +43,10 @@ export class UserController {
   }
 
   @Put(':id')
-  async update(@Body() data: UserDTO, @Param() { id }): Promise<UserDTO> {
+  async update(
+    @Body() data: UserDTO,
+    @Param() { id },
+  ): Promise<UserDTO> {
     return this.userService.update(id, data);
   }
 

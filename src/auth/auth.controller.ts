@@ -40,9 +40,7 @@ export class AuthController {
   }
 
   @Post('forget')
-  async forget(
-    @Body() { email }: ForgetPasswordDTO,
-  ): Promise<object> {
+  async forget(@Body() { email }: ForgetPasswordDTO): Promise<object> {
     return this.authService.forget(email);
   }
 
