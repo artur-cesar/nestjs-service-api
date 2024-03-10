@@ -11,11 +11,11 @@ export class StudentService {
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>,
   ) {}
-  async create(createStudentDto: CreateStudentDto):  Promise<Student> {
+  async create(createStudentDto: CreateStudentDto): Promise<Student> {
     try {
       return await this.studentRepository.save(createStudentDto);
     } catch (error) {
-      throw new BadRequestException({error, statusCode: error.statuCode})
+      throw new BadRequestException({ error, statusCode: error.statuCode });
     }
   }
 
@@ -24,14 +24,13 @@ export class StudentService {
       return await this.studentRepository.find({
         order: {
           createdAt: {
-            direction: "DESC"
-          }
-        }
-      })
+            direction: 'DESC',
+          },
+        },
+      });
     } catch (error) {
-
-      console.log(error)
-      throw new BadRequestException({error, statusCode: error.statuCode})
+      console.log(error);
+      throw new BadRequestException({ error, statusCode: error.statuCode });
     }
   }
 
@@ -41,23 +40,26 @@ export class StudentService {
         where: { id },
       });
     } catch (error) {
-      throw new BadRequestException({error, statusCode: HttpStatus.BAD_REQUEST})
+      throw new BadRequestException({
+        error,
+        statusCode: HttpStatus.BAD_REQUEST,
+      });
     }
   }
 
-  update(id: string, {name, email, phone}: UpdateStudentDto) {
-    const data: any = {}
+  update(id: string, { name, email, phone }: UpdateStudentDto) {
+    const data: any = {};
 
     if (name) {
-      data.name = name
+      data.name = name;
     }
 
     if (email) {
-      data.email = email
+      data.email = email;
     }
 
     if (phone) {
-      data.phone = phone
+      data.phone = phone;
     }
 
     try {

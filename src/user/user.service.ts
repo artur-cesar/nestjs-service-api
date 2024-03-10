@@ -8,7 +8,7 @@ import {
 import { UserDTO } from './dto/user.dto';
 import { PatchUserDTO } from './dto/patch-user.dto';
 import * as bcrypt from 'bcrypt';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ErrorsCode } from '../enums/errors-code.enum';
@@ -39,9 +39,13 @@ export class UserService {
   }
 
   async find(id: string): Promise<User> {
-    return await this.userRepository.findOne({
-      where: { id },
-    });
+    try {
+      return await this.userRepository.findOneOrFail({
+        where: { id },
+      });
+    } catch (error) {
+      throw new NotFoundException({error, statusCode: HttpStatus.NOT_FOUND})
+    }
   }
 
   async update(id: string, data: UserDTO): Promise<UserDTO> {

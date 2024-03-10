@@ -1,10 +1,15 @@
-import { IsOptional } from 'class-validator';
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'students' })
 export class Student {
   @PrimaryGeneratedColumn('uuid')
-  id: string; 
+  id: string;
 
   @Column()
   name: string;
@@ -12,7 +17,7 @@ export class Student {
   @Column({ unique: true })
   email: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   phone: string;
 
   @CreateDateColumn()

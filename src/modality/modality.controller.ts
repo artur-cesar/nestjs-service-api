@@ -1,30 +1,49 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ModalityService } from './modality.service';
 import { CreateModalityDto } from './dto/create-modality.dto';
 import { UpdateModalityDto } from './dto/update-modality.dto';
+import { AuthGuard } from '../guards/auth.guard';
+import { RoleGuard } from '../guards/role.guard';
+import { LogInterceptor } from '../interceptors/log.interceptor';
+import { Modality } from './entities/modality.entity';
 
-@Controller('modality')
+@UseGuards(AuthGuard, RoleGuard)
+@UseInterceptors(LogInterceptor)
+@Controller('modalities')
 export class ModalityController {
   constructor(private readonly modalityService: ModalityService) {}
 
   @Post()
-  create(@Body() createModalityDto: CreateModalityDto) {
-    return this.modalityService.create(createModalityDto);
+  async create(@Body() createModalityDto: CreateModalityDto): Promise<Modality> {
+    return await this.modalityService.create(createModalityDto);
   }
 
   @Get()
-  findAll() {
-    return this.modalityService.findAll();
+  async findAll(): Promise<Modality[]> {
+    return await this.modalityService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.modalityService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<Modality> {
+    return await this.modalityService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateModalityDto: UpdateModalityDto) {
-    return this.modalityService.update(+id, updateModalityDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateModalityDto: UpdateModalityDto,
+  ): Promise<Modality> {
+    return await this.modalityService.update(id, updateModalityDto);
   }
 
   @Delete(':id')
