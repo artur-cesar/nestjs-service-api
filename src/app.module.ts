@@ -15,6 +15,9 @@ import { Student } from './student/entities/student.entity';
 import { ModalityModule } from './modality/modality.module';
 import { Modality } from './modality/entities/modality.entity';
 import { GraduationModule } from './graduation/graduation.module';
+import { Graduation } from './graduation/entities/graduation.entity';
+import { ProfessorModule } from './professor/professor.module';
+import { Professor } from './professor/entities/professor.entity';
 
 @Module({
   imports: [
@@ -53,13 +56,14 @@ import { GraduationModule } from './graduation/graduation.module';
       database: 'api',
       port: 5432,
       migrations: [`${__dirname}/../../migrations/**/*.ts`],
-      entities: [User, Student, Modality],
+      entities: [User, Student, Modality, Graduation, Professor],
     }),
     UserModule,
     AuthModule,
     StudentModule,
     ModalityModule,
     GraduationModule,
+    ProfessorModule,
   ],
   controllers: [AppController],
   providers: [

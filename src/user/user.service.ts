@@ -8,7 +8,7 @@ import {
 import { UserDTO } from './dto/user.dto';
 import { PatchUserDTO } from './dto/patch-user.dto';
 import * as bcrypt from 'bcrypt';
-import { EntityNotFoundError, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ErrorsCode } from '../enums/errors-code.enum';
@@ -44,7 +44,7 @@ export class UserService {
         where: { id },
       });
     } catch (error) {
-      throw new NotFoundException({error, statusCode: HttpStatus.NOT_FOUND})
+      throw new NotFoundException({ error, statusCode: HttpStatus.NOT_FOUND });
     }
   }
 

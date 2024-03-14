@@ -29,7 +29,6 @@ export class StudentService {
         },
       });
     } catch (error) {
-      console.log(error);
       throw new BadRequestException({ error, statusCode: error.statuCode });
     }
   }

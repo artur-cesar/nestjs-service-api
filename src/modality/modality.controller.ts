@@ -24,7 +24,9 @@ export class ModalityController {
   constructor(private readonly modalityService: ModalityService) {}
 
   @Post()
-  async create(@Body() createModalityDto: CreateModalityDto): Promise<Modality> {
+  async create(
+    @Body() createModalityDto: CreateModalityDto,
+  ): Promise<Modality> {
     return await this.modalityService.create(createModalityDto);
   }
 
