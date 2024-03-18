@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Modality } from "../../modality/entities/modality.entity";
+import { Gender } from "../../enums/gender.enum";
 
 @Entity("professors")
 export class Professor {
@@ -10,7 +11,10 @@ export class Professor {
     @Column()
     name: string;
 
-    @ManyToMany(() => Modality, {cascade: true})
+    @Column({enum: Object.values(Gender)})
+    gender: string;
+
+    @ManyToMany(() => Modality, (modality) => modality.professors)
     @JoinTable({
         name: 'professor_modalities_rid',
         joinColumn: { name: 'professorId', referencedColumnName: 'id'},

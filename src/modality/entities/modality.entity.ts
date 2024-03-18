@@ -30,7 +30,7 @@ export class Modality {
   @JoinColumn()
   graduations: Graduation[];
 
-  @ManyToMany(() => Professor, {cascade: true})
+  @ManyToMany(() => Professor, (professor) => professor.modalities)
   @JoinTable({
     name: 'professor_modalities_rid',
     joinColumn: { name: 'modalityId', referencedColumnName: 'id'},

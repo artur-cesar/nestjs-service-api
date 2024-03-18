@@ -24,7 +24,11 @@ export class Student1710000675194 implements MigrationInterface {
                 {
                     name: "phone",
                     type: "varchar",
-                    isNullable: true,
+                },
+                {
+                    name: "gender",
+                    type: "enum",
+                    enum: ["MASC", "FEM", "NONE"]
                 },
                 {
                     name: "createdAt",
@@ -37,7 +41,6 @@ export class Student1710000675194 implements MigrationInterface {
                     default: "NOW()"
                 }
             ]
-
         }));
     }
 

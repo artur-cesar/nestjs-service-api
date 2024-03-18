@@ -20,6 +20,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { User } from './user.entity';
 
+@Roles(Role.Admin)
 @UseGuards(AuthGuard, RoleGuard)
 @UseInterceptors(LogInterceptor)
 @Controller('users')
@@ -31,7 +32,6 @@ export class UserController {
     return await this.userService.create(data);
   }
 
-  @Roles(Role.Admin)
   @Get()
   async list(): Promise<UserDTO[]> {
     return await this.userService.list();

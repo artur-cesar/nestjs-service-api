@@ -7,6 +7,13 @@ export class ProfessorsModalities1710297494369 implements MigrationInterface {
             name: "professor_modalities_rid",
             columns: [
                 {
+                    name: "id",
+                    type: "uuid",
+                    isPrimary: true,
+                    isGenerated: true,
+                    default: "uuid_generate_v4()"
+                },
+                {
                     name: "modalityId",
                     type: "uuid",
                     foreignKeyConstraintName: "fk_modality_professsor_modality_id"
@@ -15,22 +22,19 @@ export class ProfessorsModalities1710297494369 implements MigrationInterface {
                     name: "professorId",
                     type: "uuid",
                     foreignKeyConstraintName: "fk_modality_professsor_professor_id"
+                },
+                {
+                    name: "createdAt",
+                    type: "timestamp",
+                    default: "NOW()"
+                },
+                {
+                    name: "updatedAt",
+                    type: "timestamp",
+                    default: "NOW()"
                 }
             ]
         }));
-
-        await queryRunner.query(
-            `ALTER TABLE 
-                professor_modalities_rid 
-            ADD CONSTRAINT 
-            fk_modality_professsor_modality_id FOREIGN KEY ("modalityId") REFERENCES modalities (id)`,
-        )
-
-        await queryRunner.query(
-            `ALTER TABLE 
-                professor_modalities_rid 
-            ADD CONSTRAINT fk_modality_professsor_professor_id FOREIGN KEY ("professorId") REFERENCES professors (id)`,
-        )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

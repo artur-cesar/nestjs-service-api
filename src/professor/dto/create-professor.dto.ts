@@ -1,4 +1,5 @@
-import { IsArray, IsDateString, IsString } from "class-validator";
+import { IsArray, IsEnum, IsString } from "class-validator";
+import { Gender } from "../../enums/gender.enum";
 
 export class CreateProfessorDto {
 
@@ -8,4 +9,6 @@ export class CreateProfessorDto {
     @IsArray()
     modalities: string[]
 
+    @IsEnum(Gender)
+    gender: string;
 }

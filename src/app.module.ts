@@ -18,6 +18,7 @@ import { GraduationModule } from './graduation/graduation.module';
 import { Graduation } from './graduation/entities/graduation.entity';
 import { ProfessorModule } from './professor/professor.module';
 import { Professor } from './professor/entities/professor.entity';
+import { ProfessorModality } from './professor/entities/professor-modality.entity';
 
 @Module({
   imports: [
@@ -56,7 +57,7 @@ import { Professor } from './professor/entities/professor.entity';
       database: 'api',
       port: 5432,
       migrations: [`${__dirname}/../../migrations/**/*.ts`],
-      entities: [User, Student, Modality, Graduation, Professor],
+      entities: [User, Student, Modality, Graduation, Professor, ProfessorModality],
     }),
     UserModule,
     AuthModule,

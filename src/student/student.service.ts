@@ -13,8 +13,10 @@ export class StudentService {
   ) {}
   async create(createStudentDto: CreateStudentDto): Promise<Student> {
     try {
+      console.log(createStudentDto)
       return await this.studentRepository.save(createStudentDto);
     } catch (error) {
+      console.log(error)
       throw new BadRequestException({ error, statusCode: error.statuCode });
     }
   }
@@ -46,7 +48,7 @@ export class StudentService {
     }
   }
 
-  update(id: string, { name, email, phone }: UpdateStudentDto) {
+  update(id: string, { name, email, phone, gender }: UpdateStudentDto) {
     const data: any = {};
 
     if (name) {
@@ -59,6 +61,10 @@ export class StudentService {
 
     if (phone) {
       data.phone = phone;
+    }
+
+    if (gender) {
+      data.gender = gender;
     }
 
     try {

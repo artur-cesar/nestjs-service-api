@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Gender } from '../../enums/gender.enum';
 
 @Entity({ name: 'students' })
 export class Student {
@@ -19,6 +20,9 @@ export class Student {
 
   @Column({ nullable: true })
   phone: string;
+
+  @Column({enum: Object.values(Gender)})
+  gender: string;
 
   @CreateDateColumn()
   createdAt: string;

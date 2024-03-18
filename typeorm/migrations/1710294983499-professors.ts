@@ -18,6 +18,11 @@ export class Professors1710294983499 implements MigrationInterface {
                     type: "text"
                 },
                 {
+                    name: "gender",
+                    type: "enum",
+                    enum: ["MASC", "FEM", "NONE"]
+                },
+                {
                     name: "createdAt",
                     type: "timestamp",
                     default: "NOW()"

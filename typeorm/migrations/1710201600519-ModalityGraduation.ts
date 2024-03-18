@@ -19,7 +19,6 @@ export class ModalityGraduation1710201600519 implements MigrationInterface {
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.dropColumn("graduations", "modalityId")
-        await queryRunner.dropForeignKey("graduations", "modality_graduations_fk")
     }
 
 }

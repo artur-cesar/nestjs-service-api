@@ -6,9 +6,12 @@ import { AuthGuard } from '../guards/auth.guard';
 import { LogInterceptor } from '../interceptors/log.interceptor';
 import { RoleGuard } from '../guards/role.guard';
 import { Professor } from './entities/professor.entity';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
 
 @UseGuards(AuthGuard, RoleGuard)
 @UseInterceptors(LogInterceptor)
+@Roles(Role.Admin)
 @Controller('professors')
 export class ProfessorController {
   constructor(private readonly professorService: ProfessorService) {}
@@ -25,16 +28,16 @@ export class ProfessorController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.professorService.findOne(+id);
+    return this.professorService.findOne(id);
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateProfessorDto: UpdateProfessorDto) {
-    return this.professorService.update(+id, updateProfessorDto);
+    return this.professorService.update(id, updateProfessorDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.professorService.remove(+id);
+    return this.professorService.remove(id);
   }
 }

@@ -83,7 +83,7 @@ export class AuthController {
       '..',
       'storage',
       'photos',
-      `photo-${dashUserName}-${user.id}.png`,
+      `photo-${dashUserName}.png`,
     );
 
     try {
