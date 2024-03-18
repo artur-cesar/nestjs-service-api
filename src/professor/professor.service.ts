@@ -12,7 +12,6 @@ import { ProfessorModality } from './entities/professor-modality.entity';
 
 @Injectable()
 export class ProfessorService {
-  userRepository: any;
 
   constructor(
     @InjectRepository(Professor)

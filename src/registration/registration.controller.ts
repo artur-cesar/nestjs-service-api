@@ -11,7 +11,7 @@ import { RegistrationService } from './registration.service';
 import { CreateRegistrationDto } from './dto/create-registration.dto';
 import { UpdateRegistrationDto } from './dto/update-registration.dto';
 
-@Controller('registration')
+@Controller('registrations')
 export class RegistrationController {
   constructor(private readonly registrationService: RegistrationService) {}
 
