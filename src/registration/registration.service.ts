@@ -39,8 +39,17 @@ export class RegistrationService {
     return `This action returns a #${id} registration`;
   }
 
-  update(id: number, updateRegistrationDto: UpdateRegistrationDto) {
-    return `This action updates a #${id} registration`;
+  async update(id: string, {modalityIds}: UpdateRegistrationDto): Promise<Registration> {
+    const modalities: Modality[] = await this.modalityRepository.findBy({id: In(modalityIds)})
+    const registration: Registration = await this.registrationRepository.findOneOrFail({
+      where: {id}, 
+      relations: {
+        modalities: true
+      }})
+    console.log({registration, modalities});  
+    registration.modalities = modalities;
+    console.log({registration});  
+    return await this.registrationRepository.save(registration)
   }
 
   remove(id: number) {

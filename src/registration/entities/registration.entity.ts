@@ -21,12 +21,8 @@ export class Registration {
   @JoinColumn()
   student: Student;
 
-  @ManyToMany(() => Modality, (modality) => modality.registration)
-  @JoinTable({
-    name: 'registration_modalities_rid',
-    joinColumn: { name: 'registrationId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'modalityId', referencedColumnName: 'id' },
-  })
+  @ManyToMany(() => Modality)
+  @JoinTable()
   modalities: Modality[];
 
   @CreateDateColumn()
