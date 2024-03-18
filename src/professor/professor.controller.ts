@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, Query, UseFilters } from '@nestjs/common';
 import { ProfessorService } from './professor.service';
 import { CreateProfessorDto } from './dto/create-professor.dto';
 import { UpdateProfessorDto } from './dto/update-professor.dto';
@@ -8,9 +8,11 @@ import { RoleGuard } from '../guards/role.guard';
 import { Professor } from './entities/professor.entity';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../enums/role.enum';
+import { HttpExceptionFilter } from '../filters/http-exception.filter';
 
 @UseGuards(AuthGuard, RoleGuard)
 @UseInterceptors(LogInterceptor)
+@UseFilters(HttpExceptionFilter)
 @Roles(Role.Admin)
 @Controller('professors')
 export class ProfessorController {

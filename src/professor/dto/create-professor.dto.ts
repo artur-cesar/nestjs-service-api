@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsString } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsEnum, IsString } from "class-validator";
 import { Gender } from "../../enums/gender.enum";
 
 export class CreateProfessorDto {
@@ -7,6 +7,7 @@ export class CreateProfessorDto {
     name: string;
 
     @IsArray()
+    @ArrayNotEmpty()
     modalities: string[]
 
     @IsEnum(Gender)

@@ -19,34 +19,26 @@ export class ProfessorService {
   ){}
 
   async create(createProfessorDto: CreateProfessorDto): Promise<Professor> {
-    try {
-      const {gender, name, modalities} = createProfessorDto
+    const {gender, name, modalities} = createProfessorDto
 
-      const professor = await this.professorRepository.save({name, gender})
+    const professor = await this.professorRepository.save({name, gender})
 
-      await modalities.forEach(async (modalityId) => {
-        await this.professorModalityRepository.save({modalityId, professorId: professor.id})
-      });
+    await modalities.forEach(async (modalityId) => {
+      await this.professorModalityRepository.save({modalityId, professorId: professor.id})
+    });
 
-      this.professorRepository.save(professor);
+    this.professorRepository.save(professor);
 
-      return professor;
-    } catch (error) {
-      throw new BadRequestException({error, statusCode: HttpStatus.BAD_REQUEST})
-    }
+    return professor;
   }
 
   async findAll(): Promise<Professor[]> {
-    try {
-      return await this.professorRepository.find({
-        order: {
-          createdAt: "DESC"
-        },
-        relations: {modalities: true}
-      })
-    } catch (error) {
-      throw new BadRequestException({error, statusCode: HttpStatus.BAD_REQUEST})
-    }
+    return await this.professorRepository.find({
+      order: {
+        createdAt: "DESC"
+      },
+      relations: {modalities: true}
+    })
   }
 
   async findOne(id: string): Promise<Professor> {
@@ -58,51 +50,44 @@ export class ProfessorService {
       })
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException({error: "Professor not found", statusCode: HttpStatus.NOT_FOUND})
+        throw new NotFoundException("Professor not found", {cause: new Error(), description: `Professor was not found for ID: ${id}`})
       }
       
-      throw new BadRequestException({error, statusCode: HttpStatus.BAD_REQUEST})
+      throw new BadRequestException("Undefined error fetching professor")
     }
   }
 
   async update(id: string, {name, gender, modalities }: UpdateProfessorDto) {
 
-    try {
-      const professor: any = {}
+    const professor: any = {}
 
-      if (name) {
-        professor.name = name
-      }
+    if (name) {
+      professor.name = name
+    }
 
-      if (gender) {
-        professor.gender = gender
-      }
+    if (gender) {
+      professor.gender = gender
+    }
 
-      await this.professorRepository.update(id, professor);
+    await this.professorRepository.update(id, professor);
 
-      if (modalities) {
-        const {toInsert, toRemove} = await this.classifyModalitisToPersistence(professor.id, modalities)
+    if (modalities) {
+      const {toInsert, toRemove} = await this.classifyModalitisToPersistence(professor.id, modalities)
 
-        await toInsert.forEach(async (modalityId) => {
-          await this.professorModalityRepository.save({modalityId, professorId: id})
-        });
+      await toInsert.forEach(async (modalityId) => {
+        await this.professorModalityRepository.save({modalityId, professorId: id})
+      });
 
-        await toRemove.forEach(async (modalityId) => {
-          await this.professorModalityRepository.createQueryBuilder()
-            .delete()
-            .where("modalityId = :modalityId and professorId = :professorId", {
-              modalityId, professorId: id 
-            }).execute()
-        });
-      }
-
-      return await this.findOne(id);
-    } catch (error) {
-      throw new BadRequestException({
-        error,
-        statuCode: HttpStatus.BAD_REQUEST,
+      await toRemove.forEach(async (modalityId) => {
+        await this.professorModalityRepository.createQueryBuilder()
+          .delete()
+          .where("modalityId = :modalityId and professorId = :professorId", {
+            modalityId, professorId: id 
+          }).execute()
       });
     }
+
+    return await this.findOne(id);
   }
 
   private async classifyModalitisToPersistence(professorId: string, modalityIds: string[]) {
@@ -118,10 +103,6 @@ export class ProfessorService {
   }
 
   async remove(id: string): Promise<void> {
-    try {
-      await this.professorRepository.delete(id);
-    } catch (error) {
-      throw new BadRequestException({error, statusCode: HttpStatus.BAD_REQUEST})
-    }
+    await this.professorRepository.delete(id);
   }
 }
