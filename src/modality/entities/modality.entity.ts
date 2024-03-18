@@ -15,6 +15,7 @@ import { LogInterceptor } from '../../interceptors/log.interceptor';
 import { RoleGuard } from '../../guards/role.guard';
 import { Graduation } from '../../graduation/entities/graduation.entity';
 import { Professor } from '../../professor/entities/professor.entity';
+import { Registration } from '../../registration/entities/registration.entity';
 
 @UseGuards(AuthGuard, RoleGuard)
 @UseInterceptors(LogInterceptor)
@@ -37,6 +38,14 @@ export class Modality {
     inverseJoinColumn: { name: 'professorId', referencedColumnName: 'id'},
   })
   professors: Professor[]
+
+  @ManyToMany(() => Registration, (registration) => registration.modalities)
+  @JoinTable({
+    name: 'registration_modalities_rid',
+    joinColumn: { name: 'modalityId', referencedColumnName: 'id'},
+    inverseJoinColumn: { name: 'registrationId', referencedColumnName: 'id'},
+  })
+  registration: Registration[]
 
   @CreateDateColumn()
   createdAt: string;

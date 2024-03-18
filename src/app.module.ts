@@ -20,6 +20,7 @@ import { ProfessorModule } from './professor/professor.module';
 import { Professor } from './professor/entities/professor.entity';
 import { ProfessorModality } from './professor/entities/professor-modality.entity';
 import { RegistrationModule } from './registration/registration.module';
+import { Registration } from './registration/entities/registration.entity';
 
 @Module({
   imports: [
@@ -58,7 +59,7 @@ import { RegistrationModule } from './registration/registration.module';
       database: 'api',
       port: 5432,
       migrations: [`${__dirname}/../../migrations/**/*.ts`],
-      entities: [User, Student, Modality, Graduation, Professor, ProfessorModality],
+      entities: [User, Student, Modality, Graduation, Professor, ProfessorModality, Registration],
     }),
     UserModule,
     AuthModule,
