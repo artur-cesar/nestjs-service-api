@@ -19,6 +19,7 @@ import { Graduation } from './graduation/entities/graduation.entity';
 import { ProfessorModule } from './professor/professor.module';
 import { Professor } from './professor/entities/professor.entity';
 import { ProfessorModality } from './professor/entities/professor-modality.entity';
+import { RegistrationModule } from './registration/registration.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { ProfessorModality } from './professor/entities/professor-modality.entit
     ModalityModule,
     GraduationModule,
     ProfessorModule,
+    RegistrationModule,
   ],
   controllers: [AppController],
   providers: [
