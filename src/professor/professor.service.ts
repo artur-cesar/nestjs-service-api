@@ -14,8 +14,6 @@ export class ProfessorService {
   constructor(
     @InjectRepository(Professor)
     private readonly professorRepository: Repository<Professor>,
-    @InjectRepository(Modality)
-    private readonly modalityRepository: Repository<Modality>,
     @InjectRepository(ProfessorModality)
     private readonly professorModalityRepository: Repository<ProfessorModality>
   ){}
@@ -24,10 +22,11 @@ export class ProfessorService {
     try {
       const {gender, name, modalities} = createProfessorDto
 
-      const modalitiesToSave = await this.modalityRepository.findBy({id: In(modalities)})
       const professor = await this.professorRepository.save({name, gender})
 
-      professor.modalities = modalitiesToSave;
+      await modalities.forEach(async (modalityId) => {
+        await this.professorModalityRepository.save({modalityId, professorId: professor.id})
+      });
 
       this.professorRepository.save(professor);
 
@@ -107,8 +106,10 @@ export class ProfessorService {
   }
 
   private async classifyModalitisToPersistence(professorId: string, modalityIds: string[]) {
-    const alreadyInserted: string[] = (await this.professorModalityRepository
-      .findBy({professorId})).map((modality) => modality.modalityId)
+    const alreadyInserted: string[] = (
+      await this.professorModalityRepository
+        .findBy({professorId})
+    ).map((modality) => modality.modalityId)
 
     const toInsert: string [] = modalityIds.filter(id => !alreadyInserted.includes(id))
     const toRemove: string [] = alreadyInserted.filter(id => !modalityIds.includes(id))
