@@ -2,8 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -23,7 +21,7 @@ export class Student {
   @Column({ nullable: true })
   phone: string;
 
-  @Column({enum: Object.values(Gender)})
+  @Column({ enum: Object.values(Gender) })
   gender: string;
 
   @CreateDateColumn()

@@ -15,7 +15,7 @@ export class GraduationService {
   async create(createGraduationDto: CreateGraduationDto): Promise<Graduation> {
     try {
       const graduation =
-      await this.graduationRepository.create(createGraduationDto);
+        await this.graduationRepository.create(createGraduationDto);
       return await this.graduationRepository.save(graduation);
     } catch (error) {
       throw new BadRequestException({
@@ -45,11 +45,14 @@ export class GraduationService {
         });
       }
 
-      return await this.graduationRepository.find({ where: { modalityId }, order: {
+      return await this.graduationRepository.find({
+        where: { modalityId },
         order: {
-          direction: 'ASC',
+          order: {
+            direction: 'ASC',
+          },
         },
-      } });
+      });
     } catch (error) {
       throw new BadRequestException({
         error,
@@ -96,7 +99,7 @@ export class GraduationService {
   async batchUpdate(graduations) {
     try {
       await graduations.forEach(async (graduation) => {
-        this.graduationRepository.update(graduation.id, graduation)
+        this.graduationRepository.update(graduation.id, graduation);
       });
     } catch (error) {
       throw new BadRequestException({

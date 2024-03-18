@@ -34,18 +34,18 @@ export class Modality {
   @ManyToMany(() => Professor, (professor) => professor.modalities)
   @JoinTable({
     name: 'professor_modalities_rid',
-    joinColumn: { name: 'modalityId', referencedColumnName: 'id'},
-    inverseJoinColumn: { name: 'professorId', referencedColumnName: 'id'},
+    joinColumn: { name: 'modalityId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'professorId', referencedColumnName: 'id' },
   })
-  professors: Professor[]
+  professors: Professor[];
 
   @ManyToMany(() => Registration, (registration) => registration.modalities)
   @JoinTable({
     name: 'registration_modalities_rid',
-    joinColumn: { name: 'modalityId', referencedColumnName: 'id'},
-    inverseJoinColumn: { name: 'registrationId', referencedColumnName: 'id'},
+    joinColumn: { name: 'modalityId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'registrationId', referencedColumnName: 'id' },
   })
-  registration: Registration[]
+  registration: Registration[];
 
   @CreateDateColumn()
   createdAt: string;

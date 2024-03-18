@@ -44,8 +44,8 @@ export class ModalityService {
       return await this.modalityRepository.findOneOrFail({
         where: { id },
         relations: {
-          professors: true
-        }
+          professors: true,
+        },
       });
     } catch (error) {
       throw new NotFoundException({ error, statusCode: HttpStatus.NOT_FOUND });

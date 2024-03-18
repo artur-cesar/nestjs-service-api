@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, Query, UseFilters } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  UseInterceptors,
+  UseFilters,
+} from '@nestjs/common';
 import { ProfessorService } from './professor.service';
 import { CreateProfessorDto } from './dto/create-professor.dto';
 import { UpdateProfessorDto } from './dto/update-professor.dto';
@@ -19,7 +30,9 @@ export class ProfessorController {
   constructor(private readonly professorService: ProfessorService) {}
 
   @Post()
-  async create(@Body() createProfessorDto: CreateProfessorDto): Promise<Professor> {
+  async create(
+    @Body() createProfessorDto: CreateProfessorDto,
+  ): Promise<Professor> {
     return this.professorService.create(createProfessorDto);
   }
 
@@ -34,7 +47,10 @@ export class ProfessorController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateProfessorDto: UpdateProfessorDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateProfessorDto: UpdateProfessorDto,
+  ) {
     return this.professorService.update(id, updateProfessorDto);
   }
 

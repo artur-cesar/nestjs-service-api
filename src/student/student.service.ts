@@ -13,10 +13,10 @@ export class StudentService {
   ) {}
   async create(createStudentDto: CreateStudentDto): Promise<Student> {
     try {
-      console.log(createStudentDto)
+      console.log(createStudentDto);
       return await this.studentRepository.save(createStudentDto);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new BadRequestException({ error, statusCode: error.statuCode });
     }
   }

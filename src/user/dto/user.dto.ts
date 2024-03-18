@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
   IsEmail,
@@ -10,7 +9,6 @@ import {
 import { Role } from 'src/enums/role.enum';
 
 export class UserDTO {
-
   @IsString()
   name: string;
 

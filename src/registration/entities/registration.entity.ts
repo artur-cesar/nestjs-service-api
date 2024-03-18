@@ -1,28 +1,34 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, UpdateDateColumn } from "typeorm";
-import { Student } from "../../student/entities/student.entity";
-import { Modality } from "../../modality/entities/modality.entity";
+import {
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToOne,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Student } from '../../student/entities/student.entity';
+import { Modality } from '../../modality/entities/modality.entity';
 
-@Entity("registrations")
+@Entity('registrations')
 export class Registration {
+  id: string;
 
-    id: string;
+  @OneToOne(() => Student)
+  @JoinColumn()
+  student: Student;
 
-    @OneToOne(() => Student)
-    @JoinColumn()
-    student: Student;
+  @ManyToMany(() => Modality, (modality) => modality.registration)
+  @JoinTable({
+    name: 'registration_modalities_rid',
+    joinColumn: { name: 'registrationId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'modalityId', referencedColumnName: 'id' },
+  })
+  modalities: Modality[];
 
-    @ManyToMany(() => Modality, (modality) => modality.registration)
-    @JoinTable({
-        name: 'registration_modalities_rid',
-        joinColumn: { name: 'registrationId', referencedColumnName: 'id'},
-        inverseJoinColumn: { name: 'modalityId', referencedColumnName: 'id'},
-    })
-    modalities: Modality[]
+  @CreateDateColumn()
+  createdAt: string;
 
-    @CreateDateColumn()
-    createdAt: string;
-
-    @UpdateDateColumn()
-    updatedAt: string;
-    
+  @UpdateDateColumn()
+  updatedAt: string;
 }

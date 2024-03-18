@@ -4,12 +4,12 @@ import { IsArray, IsEnum, IsString } from 'class-validator';
 import { Gender } from '../../enums/gender.enum';
 
 export class UpdateProfessorDto extends PartialType(CreateProfessorDto) {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsArray()
-    modalities: string[]
+  @IsArray()
+  modalities: string[];
 
-    @IsEnum(Gender)
-    gender: string;
+  @IsEnum(Gender)
+  gender: string;
 }
