@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { CreateProfessorDto } from './dto/create-professor.dto';
 import { UpdateProfessorDto } from './dto/update-professor.dto';
-import { EntityNotFoundError, Repository } from 'typeorm';
+import { EntityNotFoundError, In, Repository } from 'typeorm';
 import { Professor } from './entities/professor.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProfessorModality } from './entities/professor-modality.entity';
+import { Modality } from '../modality/entities/modality.entity';
 
 @Injectable()
 export class ProfessorService {
@@ -16,22 +16,17 @@ export class ProfessorService {
   constructor(
     @InjectRepository(Professor)
     private readonly professorRepository: Repository<Professor>,
-    @InjectRepository(ProfessorModality)
-    private readonly professorModalityRepository: Repository<ProfessorModality>,
+    @InjectRepository(Modality)
+    private readonly modalityRepository: Repository<Modality>
   ) {}
 
   async create(createProfessorDto: CreateProfessorDto): Promise<Professor> {
-    const { gender, name, modalities } = createProfessorDto;
-
-    const professor = await this.professorRepository.save({ name, gender });
-
-    await modalities.forEach(async (modalityId) => {
-      await this.professorModalityRepository.save({
-        modalityId,
-        professorId: professor.id,
-      });
-    });
-
+    const { gender, name, modalityIds } = createProfessorDto;
+    const modalities: Modality[] = await this.modalityRepository.findBy({id: In(modalityIds)})
+    const professor = this.professorRepository.create({ name, gender })
+    professor.modalities = modalities
+    await this.professorRepository.save(professor);
+    
     this.professorRepository.save(professor);
 
     return professor;
@@ -41,18 +36,14 @@ export class ProfessorService {
     return await this.professorRepository.find({
       order: {
         createdAt: 'DESC',
-      },
-      relations: { modalities: true },
+      }
     });
   }
 
   async findOne(id: string): Promise<Professor> {
     try {
       return await this.professorRepository.findOneOrFail({
-        where: { id },
-        relations: {
-          modalities: true,
-        },
+        where: { id }
       });
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
@@ -79,50 +70,7 @@ export class ProfessorService {
 
     await this.professorRepository.update(id, professor);
 
-    if (modalities) {
-      const { toInsert, toRemove } = await this.classifyModalitisToPersistence(
-        professor.id,
-        modalities,
-      );
-
-      await toInsert.forEach(async (modalityId) => {
-        await this.professorModalityRepository.save({
-          modalityId,
-          professorId: id,
-        });
-      });
-
-      await toRemove.forEach(async (modalityId) => {
-        await this.professorModalityRepository
-          .createQueryBuilder()
-          .delete()
-          .where('modalityId = :modalityId and professorId = :professorId', {
-            modalityId,
-            professorId: id,
-          })
-          .execute();
-      });
-    }
-
     return await this.findOne(id);
-  }
-
-  private async classifyModalitisToPersistence(
-    professorId: string,
-    modalityIds: string[],
-  ) {
-    const alreadyInserted: string[] = (
-      await this.professorModalityRepository.findBy({ professorId })
-    ).map((modality) => modality.modalityId);
-
-    const toInsert: string[] = modalityIds.filter(
-      (id) => !alreadyInserted.includes(id),
-    );
-    const toRemove: string[] = alreadyInserted.filter(
-      (id) => !modalityIds.includes(id),
-    );
-
-    return { toInsert, toRemove };
   }
 
   async remove(id: string): Promise<void> {

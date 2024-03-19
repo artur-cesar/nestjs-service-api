@@ -40,5 +40,4 @@ export class RegistrationModalities1710781350992 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         queryRunner.dropTable(this.tableName, true)
     }
-
 }

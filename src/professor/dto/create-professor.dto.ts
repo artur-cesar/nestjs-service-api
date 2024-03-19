@@ -1,13 +1,13 @@
-import { ArrayNotEmpty, IsArray, IsEnum, IsString } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsEnum, IsString, IsUUID } from 'class-validator';
 import { Gender } from '../../enums/gender.enum';
 
 export class CreateProfessorDto {
   @IsString()
   name: string;
 
-  @IsArray()
+  @IsUUID("4", {each: true})
   @ArrayNotEmpty()
-  modalities: string[];
+  modalityIds: string[];
 
   @IsEnum(Gender)
   gender: string;

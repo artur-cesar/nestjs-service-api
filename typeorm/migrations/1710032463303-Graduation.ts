@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class Graduation1710032463303 implements MigrationInterface {
-
+    private readonly tableName: string = "graduations"
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table({
-            name: "graduations",
+            name: this.tableName,
             columns: [
                 {
                     name: "id",
@@ -24,6 +24,11 @@ export class Graduation1710032463303 implements MigrationInterface {
                     isNullable: true
                 },
                 {
+                    name: "modalityId",
+                    type: 'uuid',
+                    foreignKeyConstraintName: "graduation_modality_fk"
+                },
+                {
                     name: "createdAt",
                     type: "timestamp",
                     default: "NOW()"
@@ -39,7 +44,7 @@ export class Graduation1710032463303 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("graduations")
+        await queryRunner.dropTable(this.tableName, true)
     }
 
 }

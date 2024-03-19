@@ -42,10 +42,7 @@ export class ModalityService {
   async findOne(id: string): Promise<Modality> {
     try {
       return await this.modalityRepository.findOneOrFail({
-        where: { id },
-        relations: {
-          professors: true,
-        },
+        where: { id }
       });
     } catch (error) {
       throw new NotFoundException({ error, statusCode: HttpStatus.NOT_FOUND });

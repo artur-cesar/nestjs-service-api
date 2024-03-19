@@ -19,7 +19,7 @@ import { Registration } from '../../registration/entities/registration.entity';
 
 @UseGuards(AuthGuard, RoleGuard)
 @UseInterceptors(LogInterceptor)
-@Entity({ name: 'modalities' })
+@Entity('modalities')
 export class Modality {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -30,14 +30,6 @@ export class Modality {
   @OneToMany(() => Graduation, (graduation) => graduation.modality)
   @JoinColumn()
   graduations: Graduation[];
-
-  @ManyToMany(() => Professor, (professor) => professor.modalities)
-  @JoinTable({
-    name: 'professor_modalities_rid',
-    joinColumn: { name: 'modalityId', referencedColumnName: 'id'},
-    inverseJoinColumn: { name: 'professorId', referencedColumnName: 'id'},
-  })
-  professors: Professor[]
 
   @CreateDateColumn()
   createdAt: string;

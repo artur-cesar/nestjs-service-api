@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
 export class ProfessorsModalities1710297494369 implements MigrationInterface {
-
+    private readonly tableName: string = "professors_modalities_modalities"
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable( new Table({
-            name: "professor_modalities_rid",
+            name: this.tableName,
             columns: [
                 {
                     name: "id",
@@ -14,12 +14,12 @@ export class ProfessorsModalities1710297494369 implements MigrationInterface {
                     default: "uuid_generate_v4()"
                 },
                 {
-                    name: "modalityId",
+                    name: "modalitiesId",
                     type: "uuid",
                     foreignKeyConstraintName: "fk_modality_professsor_modality_id"
                 },
                 {
-                    name: "professorId",
+                    name: "professorsId",
                     type: "uuid",
                     foreignKeyConstraintName: "fk_modality_professsor_professor_id"
                 },
@@ -38,7 +38,7 @@ export class ProfessorsModalities1710297494369 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("professor_modalities_rid", true)
+        await queryRunner.dropTable(this.tableName, true)
     }
 
 }

@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class Modality1710020083953 implements MigrationInterface {
-
+    private readonly tableName: string = "modalities";
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable( new Table({
-            name: "modalities",
+            name: this.tableName,
             columns: [
                 {
                     name: "id",
@@ -33,7 +33,7 @@ export class Modality1710020083953 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.dropTable("modalities")
+        queryRunner.dropTable(this.tableName, true)
     }
 
 }

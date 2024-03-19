@@ -21,12 +21,8 @@ export class Professor {
   @Column({ enum: Object.values(Gender) })
   gender: string;
 
-  @ManyToMany(() => Modality, (modality) => modality.professors)
-  @JoinTable({
-    name: 'professor_modalities_rid',
-    joinColumn: { name: 'professorId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'modalityId', referencedColumnName: 'id' },
-  })
+  @ManyToMany(() => Modality)
+  @JoinTable()
   modalities: Modality[];
 
   @CreateDateColumn()

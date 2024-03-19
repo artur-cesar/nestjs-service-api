@@ -7,14 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Professor } from './entities/professor.entity';
 import { Modality } from '../modality/entities/modality.entity';
 import { ModalityModule } from '../modality/modality.module';
-import { ProfessorModality } from './entities/professor-modality.entity';
 
 @Module({
   imports: [
     UserModule,
     ModalityModule,
     forwardRef(() => AuthModule),
-    TypeOrmModule.forFeature([Professor, Modality, ProfessorModality]),
+    TypeOrmModule.forFeature([Professor, Modality]),
   ],
   controllers: [ProfessorController],
   providers: [ProfessorService],

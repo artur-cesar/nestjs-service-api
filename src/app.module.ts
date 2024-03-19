@@ -18,7 +18,6 @@ import { GraduationModule } from './graduation/graduation.module';
 import { Graduation } from './graduation/entities/graduation.entity';
 import { ProfessorModule } from './professor/professor.module';
 import { Professor } from './professor/entities/professor.entity';
-import { ProfessorModality } from './professor/entities/professor-modality.entity';
 import { RegistrationModule } from './registration/registration.module';
 import { Registration } from './registration/entities/registration.entity';
 
@@ -65,7 +64,6 @@ import { Registration } from './registration/entities/registration.entity';
         Modality,
         Graduation,
         Professor,
-        ProfessorModality,
         Registration,
       ],
     }),
